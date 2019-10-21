@@ -43,14 +43,16 @@ public class ParkingLot {
 		}
 		if(numCars < capacity) {
 			c.setTicket(new Ticket(currentTicket));
+			System.out.println(c.getName() + "'s car has entered the parking lot with ticket number " + currentTicket + ".");
 			numCars++;
 			carsAllTime++;
 			currentTicket++;
 			carsInLot.add(c);
-			System.out.println(c.getName() + "'s car has entered the parking lot.");
+			
 		}
 		else {
 			carQueue.add(c);
+			System.out.println(c.getName() + "'s car has joined the line.");
 		}
 		entranceGate.toggleState();
 	}
@@ -78,7 +80,7 @@ public class ParkingLot {
 			numCars++;
 			carsAllTime++;
 			currentTicket++;
-			System.out.println(carQueue.peek().getName() + "'s car has entered the parking lot with ticket number" + carQueue.remove().getTicketNumber() + ".");
+			System.out.println(carQueue.peek().getName() + "'s car has entered the parking lot with ticket number " + carQueue.remove().getTicketNumber() + ".");
 		}
 	}
 	public void getStats() {

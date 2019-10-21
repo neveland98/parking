@@ -12,19 +12,19 @@ public class ParkingLot {
 	private int currentTicket = 0;//current ticket number
 	private Gate entranceGate = new Gate();
 	private Gate exitGate = new Gate();
-	private Car carsInLot[];
+	private LinkedList<Car> carsInLot;
 	private Queue<Car> carQueue;
 	//constructors
 	ParkingLot() {
 		capacity = 30;
-		carsInLot = new Car[60];
+		carsInLot = new LinkedList<Car>();
 		carQueue = new LinkedList<Car>();
 		
 		ticketPrice = 5.0;
 	}
 	ParkingLot(int c, double p) {
 		capacity = c;
-		carsInLot = new Car[2*c];
+		carsInLot = new LinkedList<Car>();
 		ticketPrice = p;
 		carQueue = new LinkedList<Car>();
 		}
@@ -34,12 +34,25 @@ public class ParkingLot {
 		 * if there is space, give car ticket and allow to enter, and increment numCars
 		 * else,  allow car to queue at gate 
 		 */
+		entranceGate.toggleState();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(numCars < capacity) {
-			c.setTicket(new Ticket());
+			c.setTicket(new Ticket(currentTicket));
+			numCars++;
+			carsAllTime++;
+			currentTicket++;
+			carsInLot.add(c);
+			System.out.print(c.getName() + "'s car has entered the parking lot.");
 		}
 		else {
 			carQueue.add(c);
 		}
+		entranceGate.toggleState();
 	}
 	public void exit(Car c) {
 		/*
@@ -47,22 +60,29 @@ public class ParkingLot {
 		 * else, enqueue car at exit gate
 		 * also add first car from carqueue to lot
 		 */
-		if(!exitGate.busy()) {
-			
+		exitGate.toggleState();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.print(c.getName() + "'s car has left the parking lot at " + c.getTicketTime() + ".");
+		totalProfit += ticketPrice;
+		carsInLot.remove(carsInLot.indexOf(c));
+		numCars--;
+		exitGate.toggleState();
+		if(!carQueue.isEmpty()) {
+			carQueue.peek().setTicket(new Ticket(currentTicket));
+			numCars++;
+			carsAllTime++;
+			currentTicket++;
+			System.out.print(carQueue.peek().getName() + "'s car has entered the parking lot with ticket number" + carQueue.remove().getTicketNumber() + ".");
 		}
 	}
-	public void enter(String n) {//owner name
-		/* Check if there is space available
-		 * if there is space, give car ticket and allow to enter, and increment numCars
-		 * else,  allow car to queue at gate 
-		 */
+	public void getStats() {
+		System.out.println("Total profits: $" + totalProfit);
+		System.out.println("Total cars parked in lot: " + carsAllTime);
 	}
-	public void exit(String n) {//owner name
-		/*
-		 * if gate is available, allow ticket to be paid and decrement numCars
-		 * else, enqueue car at exit gate
-		 */
-	}
-	
   
 }

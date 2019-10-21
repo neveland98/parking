@@ -21,7 +21,7 @@ public class Car {
 		return t;
 	}
 	String getTicketTime() {
-		return t.toString();
+		return t.getTime().toString();
 	}
 	int getTicketNumber() {
 		return t.getNumber();

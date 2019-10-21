@@ -47,7 +47,7 @@ public class ParkingLot {
 			carsAllTime++;
 			currentTicket++;
 			carsInLot.add(c);
-			System.out.print(c.getName() + "'s car has entered the parking lot.");
+			System.out.println(c.getName() + "'s car has entered the parking lot.");
 		}
 		else {
 			carQueue.add(c);
@@ -60,6 +60,7 @@ public class ParkingLot {
 		 * else, enqueue car at exit gate
 		 * also add first car from carqueue to lot
 		 */
+		//System.out.println("this function ran");
 		exitGate.toggleState();
 		try {
 			Thread.sleep(2000);
@@ -67,7 +68,7 @@ public class ParkingLot {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.print(c.getName() + "'s car has left the parking lot at " + c.getTicketTime() + ".");
+		System.out.println(c.getName() + "'s car has left the parking lot at " + c.getTicketTime() + ".");
 		totalProfit += ticketPrice;
 		carsInLot.remove(carsInLot.indexOf(c));
 		numCars--;
@@ -77,12 +78,31 @@ public class ParkingLot {
 			numCars++;
 			carsAllTime++;
 			currentTicket++;
-			System.out.print(carQueue.peek().getName() + "'s car has entered the parking lot with ticket number" + carQueue.remove().getTicketNumber() + ".");
+			System.out.println(carQueue.peek().getName() + "'s car has entered the parking lot with ticket number" + carQueue.remove().getTicketNumber() + ".");
 		}
 	}
 	public void getStats() {
 		System.out.println("Total profits: $" + totalProfit);
 		System.out.println("Total cars parked in lot: " + carsAllTime);
+	}
+	public void enEx(String s) {
+		if(s.isEmpty()) {
+			return;
+		}
+		if(s.charAt(s.length()-1) == 'E') {
+			enter(new Car(s.substring(0,s.length()-2)));
+		}
+		else {
+			for(int i = 0; i < carsInLot.size(); i++ ) {
+				//System.out.println(carsInLot.get(i).getName() + " from lot");
+				//System.out.println(s.substring(0,s.length() - 2) + " from file");
+				//System.out.println(carsInLot.get(i).getName() == s.substring(0,s.length() - 2));
+				if(carsInLot.get(i).getName().contentEquals(s.substring(0,s.length() - 2)) ) {
+					exit(carsInLot.get(i));
+					return;
+				}
+			}
+		}
 	}
   
 }

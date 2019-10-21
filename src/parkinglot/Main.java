@@ -1,15 +1,24 @@
 package parkinglot;
 import java.io.*;
+import java.util.Scanner;
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
     	String filename = args[0];
-    	try {
-			BufferedReader br = new BufferedReader(new FileReader(filename));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	ParkingLot p = new ParkingLot(1,5.0);
-    	p.getStats();
+    	File file = new File(filename);
+    	int size;
+    	double price;
+    	String st;
+		Scanner sc = new Scanner(file);
+		size = sc.nextInt();
+		price = sc.nextDouble();
+		ParkingLot p = new ParkingLot(size,price);
+	    while (sc.hasNextLine()) {
+	    	st = sc.nextLine();
+	    	p.enEx(st);
+	    	//System.out.println(st);
+	    } 
+	    
+	    p.getStats();
+	    sc.close();
     }
 }

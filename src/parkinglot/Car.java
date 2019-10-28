@@ -2,6 +2,7 @@ package parkinglot;
 
 public class Car {
 	//attributes
+	boolean parked = false;
 	private String ownerName;
 	private Ticket t;
 	//constructors
@@ -25,6 +26,18 @@ public class Car {
 	}
 	int getTicketNumber() {
 		return t.getNumber();
+	}
+	public double requestPrice(Group g) {
+		return g.getPrice();
+	}
+	public double requestPrice(ParkingLot p) {
+		return p.getPrice();
+	}
+	public void togglePark() {
+		parked = !parked;
+	}
+	public boolean parked() {
+		return parked;
 	}
 
 }

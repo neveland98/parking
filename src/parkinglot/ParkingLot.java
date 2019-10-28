@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 public class ParkingLot {
 	//attributes
+	private String lotName;
 	private int capacity;//capacity of the lot
 	private int numCars = 0;//current number of cars
 	private int carsAllTime = 0; //number of cars that used the parking lot since opening
@@ -19,14 +20,15 @@ public class ParkingLot {
 		capacity = 30;
 		carsInLot = new LinkedList<Car>();
 		carQueue = new LinkedList<Car>();
-		
+		lotName = "Parking Lot";
 		ticketPrice = 5.0;
 	}
-	ParkingLot(int c, double p) {
+	ParkingLot(int c, double p, String n) {
 		capacity = c;
 		carsInLot = new LinkedList<Car>();
 		ticketPrice = p;
 		carQueue = new LinkedList<Car>();
+		lotName = n;
 		}
 	//methods
 	public void enter(Car c) {
@@ -34,6 +36,10 @@ public class ParkingLot {
 		 * if there is space, give car ticket and allow to enter, and increment numCars
 		 * else,  allow car to queue at gate 
 		 */
+		if(c.parked()) {
+			System.out.println(c.getName() + "'s car is already parked!");
+			return;
+		}
 		entranceGate.toggleState();
 		try {
 			Thread.sleep(2000);
@@ -47,6 +53,7 @@ public class ParkingLot {
 			numCars++;
 			carsAllTime++;
 			currentTicket++;
+			c.togglePark();
 			carsInLot.add(c);
 			
 		}
@@ -72,6 +79,7 @@ public class ParkingLot {
 		}
 		System.out.println(c.getName() + "'s car has left the parking lot at " + c.getTicketTime() + ".");
 		totalProfit += ticketPrice;
+		c.togglePark();
 		carsInLot.remove(carsInLot.indexOf(c));
 		numCars--;
 		exitGate.toggleState();
@@ -80,7 +88,10 @@ public class ParkingLot {
 			numCars++;
 			carsAllTime++;
 			currentTicket++;
-			System.out.println(carQueue.peek().getName() + "'s car has entered the parking lot with ticket number " + carQueue.remove().getTicketNumber() + ".");
+			Car temp = carQueue.peek();
+			temp.togglePark();
+			carsInLot.add(temp);
+			System.out.println(temp.getName() + "'s car has entered the parking lot with ticket number " + carQueue.remove().getTicketNumber() + ".");
 		}
 	}
 	public void getStats() {
@@ -105,6 +116,12 @@ public class ParkingLot {
 				}
 			}
 		}
+	}
+	public void setPrice(double p) {
+		ticketPrice = p;
+	}
+	public double getPrice() {
+		return ticketPrice;
 	}
   
 }

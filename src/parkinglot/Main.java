@@ -11,7 +11,7 @@ public class Main {
 		Scanner sc = new Scanner(file);
 		size = sc.nextInt();
 		price = sc.nextDouble();
-		ParkingLot p = new ParkingLot(size,price);
+		ParkingLot p = new ParkingLot(size,price,"Lot A");
 	    while (sc.hasNextLine()) {
 	    	st = sc.nextLine();
 	    	p.enEx(st);
